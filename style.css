@@ -1,0 +1,580 @@
+/*
+  style.css — how everything LOOKS.
+  Built "phone first": the base styles are for a phone screen, and the
+  layout simply stops growing past 560px wide on bigger screens.
+*/
+
+/* ---------- Design tokens ----------
+   Every color and size is defined once here and reused everywhere.
+   Change --accent and the whole app (charts too) follows. */
+:root {
+  --bg: #0a0a0a;          /* page background */
+  --surface: #151515;     /* cards */
+  --surface-2: #1f1f1f;   /* inputs, chips, things inside cards */
+  --border: #262626;
+  --text: #f5f5f5;
+  --muted: #8c8c8c;
+  --accent: #ff3b1f;      /* race red */
+  --accent-press: #d92e14;
+  --on-accent: #ffffff;   /* text on top of the accent */
+  --warning: #ffb020;     /* stall warnings */
+
+  --space: 16px;          /* the standard gap; most spacing uses it */
+  --radius: 14px;
+  --tabbar-height: 64px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-tap-highlight-color: transparent; /* no gray flash when tapping */
+}
+
+/* Buttons and inputs don't inherit fonts by default; make them */
+button, input, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ---------- Page layout ---------- */
+.app {
+  max-width: 560px;
+  margin: 0 auto;
+  /* Extra bottom padding so the tab bar never covers content.
+     env(safe-area-inset-*) = space for the notch / home bar on iPhones. */
+  padding: calc(var(--space) + env(safe-area-inset-top)) var(--space)
+           calc(var(--tabbar-height) + env(safe-area-inset-bottom) + 24px);
+}
+
+.page-header {
+  margin: 8px 0 20px;
+}
+
+.page-header h1 {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 4px;
+}
+
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
+
+.empty {
+  color: var(--muted);
+  font-size: 15px;
+  margin: 0;
+}
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space);
+  margin-bottom: 12px;
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.card-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* A text button in a card header shouldn't push the card taller */
+.card-head .btn-ghost {
+  min-height: 32px;
+  margin: -6px 0;
+}
+
+.card-warn {
+  border-color: rgba(255, 176, 32, 0.45);
+}
+
+.card-warn .card-title {
+  color: var(--warning);
+}
+
+/* ---------- Big numbers (stats) ---------- */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.stat-grid .card {
+  margin: 0;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-top: 6px;
+  font-variant-numeric: tabular-nums; /* digits line up evenly */
+}
+
+.stat-unit {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-left: 4px;
+}
+
+.stat-sub {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.stat-sub.up {
+  color: var(--accent);
+}
+
+/* ---------- Lists inside cards ---------- */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+}
+
+.list-item:first-child { border-top: none; padding-top: 0; }
+.list-item:last-child { padding-bottom: 0; }
+
+/* A list item you can tap */
+button.list-item {
+  width: 100%;
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  text-align: left;
+}
+
+.list-main {
+  font-weight: 600;
+}
+
+.list-sub {
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.list-value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;   /* at least 44px = comfortable thumb target */
+  padding: 0 18px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font-weight: 700;
+}
+
+.btn-block {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  min-height: 56px;
+  font-size: 17px;
+  letter-spacing: 0.01em;
+}
+
+.btn-primary:active { background: var(--accent-press); }
+
+.btn-secondary {
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+
+.btn-secondary:active { background: var(--border); }
+
+.btn-ghost {
+  background: none;
+  color: var(--accent);
+  padding: 0 4px;
+  min-height: 44px;
+}
+
+.btn-danger {
+  background: none;
+  border-color: var(--border);
+  color: #ff6b5a;
+}
+
+/* Small square button holding just an icon or ✕ */
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: 10px;
+  background: none;
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.icon-btn:active { background: var(--surface-2); }
+
+/* Two buttons side by side */
+.button-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.button-row .btn {
+  flex: 1;
+  min-height: 44px;
+}
+
+/* ---------- Inputs ---------- */
+.label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.input {
+  width: 100%;
+  min-height: 52px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0 14px;
+  font-size: 18px;   /* 16px+ stops iPhones from zooming in on tap */
+  color-scheme: dark; /* dark date picker */
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.textarea {
+  min-height: 96px;
+  padding: 12px 14px;
+  font-size: 16px;
+  line-height: 1.4;
+  resize: vertical;
+}
+
+/* Hide the tiny up/down arrows on number inputs */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Input + button on one line (bodyweight quick log) */
+.inline-form {
+  display: flex;
+  gap: 8px;
+}
+
+.inline-form .input { flex: 1; }
+.inline-form .btn { min-height: 52px; }
+
+/* ---------- Set rows in the logger ----------
+   Grid columns: [set #] [reps] [×] [weight] [remove] */
+.set-labels,
+.set-row {
+  display: grid;
+  grid-template-columns: 22px 1fr 14px 1fr 44px;
+  gap: 8px;
+  align-items: center;
+}
+
+.set-labels {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.set-row {
+  margin-bottom: 8px;
+}
+
+.set-input {
+  min-height: 58px;
+  padding: 0 6px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.set-input::placeholder {
+  color: #4d4d4d;   /* last time's numbers, shown faintly */
+}
+
+.set-num,
+.times {
+  color: var(--muted);
+  text-align: center;
+  font-weight: 700;
+}
+
+.exercise .card-title {
+  font-size: 18px;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text);
+}
+
+.exercise-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ---------- Chips (lift pickers) ---------- */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* A single row that scrolls sideways (Progress screen) */
+.chips-scroll {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  margin: 0 calc(-1 * var(--space)) 16px;
+  padding: 0 var(--space);
+  scrollbar-width: none;
+}
+
+.chips-scroll::-webkit-scrollbar { display: none; }
+
+.chip {
+  flex-shrink: 0;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.chip.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+/* ---------- History ---------- */
+.exercise-block + .exercise-block {
+  margin-top: 12px;
+}
+
+.exercise-line {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-weight: 600;
+}
+
+.set-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.set-pill {
+  background: var(--surface-2);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.set-pill.pr {
+  background: rgba(255, 59, 31, 0.15);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.notes {
+  margin: 0 0 12px;
+  padding-left: 10px;
+  border-left: 2px solid var(--accent);
+  color: var(--muted);
+  font-size: 14px;
+  white-space: pre-wrap; /* keep line breaks you typed */
+}
+
+/* ---------- Badges ---------- */
+.badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  vertical-align: middle;
+}
+
+.badge-warn {
+  background: none;
+  border: 1px solid var(--warning);
+  color: var(--warning);
+}
+
+/* ---------- Charts ---------- */
+.chart {
+  display: block;
+  width: 100%;
+  height: 220px;
+}
+
+/* ---------- Bottom tab bar ---------- */
+.tab-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  background: rgba(10, 10, 10, 0.92);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);   /* frosted glass over scrolling content */
+  border-top: 1px solid var(--border);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.tab-bar-inner {
+  max-width: 560px;
+  height: var(--tabbar-height);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.tab-bar button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.tab-bar svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;   /* icon uses the button's text color */
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tab-bar button.active {
+  color: var(--accent);
+}
+
+/* ---------- Toast (pop-up message) ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom) + 12px);
+  z-index: 20;
+  width: calc(100% - 32px);
+  max-width: 528px;
+  padding: 14px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 12px;
+  font-size: 15px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 20px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.toast .pr-line {
+  margin-top: 4px;
+  color: var(--accent);
+  font-weight: 700;
+}
