@@ -45,7 +45,10 @@ self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET" || !event.request.url.startsWith(self.location.origin)) return;
 
   event.respondWith(
-    fetch(event.request)
+    // cache: "no-cache" = always ask GitHub "is there a newer version?"
+    // instead of reusing the phone's 10-minute saved copy. Without this,
+    // an update you upload can take up to 10 minutes to appear.
+    fetch(event.request, { cache: "no-cache" })
       .then((response) => {
         // Got it from the internet: keep a copy for offline use
         const copy = response.clone();
