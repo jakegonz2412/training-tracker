@@ -1,6 +1,6 @@
 {
   "name": "Training Tracker",
-  "short_name": "Training",
+  "short_name": "Training Tracker",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
