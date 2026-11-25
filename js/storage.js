@@ -37,6 +37,7 @@ const LIFTS = [
   "Barbell lunge",
   "Dumbbell press",
   "Overhead barbell press",
+"Deadlift",
 ];
 
 // Names the data is saved under in the browser's storage (localStorage).
